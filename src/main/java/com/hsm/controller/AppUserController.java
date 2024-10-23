@@ -24,17 +24,17 @@ public class AppUserController {
     // ----------------------- SignUp ----------------------- //
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addNewUser(@RequestBody AppUserDto appUserDto) {
-        Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUserDto);
+    public ResponseEntity<?> addNewUser(@RequestBody AppUser appUser) {
+        Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUser);
         if (usernameChecked.isPresent()) {
             return new ResponseEntity<>("Username already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Optional<AppUser> emailChecked = appUserService.verifySignupEmail(appUserDto);
+        Optional<AppUser> emailChecked = appUserService.verifySignupEmail(appUser);
         if (emailChecked.isPresent()) {
             return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        appUserService.encryptPassword(appUserDto);
-        return new ResponseEntity<>(appUserService.addUser(appUserDto),HttpStatus.CREATED);
+        appUserService.encryptPassword(appUser);
+        return new ResponseEntity<>(appUserService.addUser(appUser),HttpStatus.CREATED);
     }
 
     // ----------------------- SignIn ----------------------- //
@@ -63,4 +63,14 @@ public class AppUserController {
     public ResponseEntity<AppUserDto> getByEmail(@RequestParam String email) {
         return new ResponseEntity<>(appUserService.findEmail(email), HttpStatus.OK);
     }
+
+    @GetMapping("/all/data")
+    public ResponseEntity<?> getAllUser() {
+        return new ResponseEntity<>(appUserService.getAllUserDetails(), HttpStatus.OK);
+    }
+
+    // ----------------------- Update ----------------------- //
+
+    // ----------------------- Delete ----------------------- //
+
 }

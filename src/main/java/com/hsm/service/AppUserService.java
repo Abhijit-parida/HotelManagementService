@@ -5,10 +5,13 @@ import com.hsm.payload.AppUserDto;
 import com.hsm.payload.LoginDto;
 import com.hsm.repository.AppUserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserService {
@@ -34,17 +37,17 @@ public class AppUserService {
 
     // ----------------------- SignUp ----------------------- //
 
-    public Optional<AppUser> verifySignupUsername(AppUserDto appUserDto) {
-        return appUserRepository.findByUsername(appUserDto.getUsername());
+    public Optional<AppUser> verifySignupUsername(AppUser appUser) {
+        return appUserRepository.findByUsername(appUser.getUsername());
     }
-    public Optional<AppUser> verifySignupEmail(AppUserDto appUserDto) {
-        return appUserRepository.findByEmail(appUserDto.getEmail());
+    public Optional<AppUser> verifySignupEmail(AppUser appUser) {
+        return appUserRepository.findByEmail(appUser.getEmail());
     }
-    public void encryptPassword(AppUserDto appUserDto) {
-        appUserDto.setPassword(BCrypt.hashpw(appUserDto.getPassword(), BCrypt.gensalt(5)));
+    public void encryptPassword(AppUser appUser) {
+        appUser.setPassword(BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5)));
     }
-    public AppUserDto addUser(AppUserDto appUserDto) {
-        return mapToDto(appUserRepository.save(mapToEntity(appUserDto)));
+    public AppUserDto addUser(AppUser appUser) {
+        return mapToDto(appUserRepository.save(appUser));
     }
 
     // ----------------------- SignIn ----------------------- //
@@ -72,4 +75,15 @@ public class AppUserService {
     public AppUserDto findEmail(String email) {
         return mapToDto(appUserRepository.findByEmail(email).get());
     }
+    public List<AppUserDto> getAllUserDetails() {
+        List<AppUser> registrations = appUserRepository.findAll();
+        List<AppUserDto> dto = registrations.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+        return dto;
+    }
+
+    // ----------------------- Update ----------------------- //
+
+    // ----------------------- Delete ----------------------- //
 }
