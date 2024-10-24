@@ -3,6 +3,7 @@ package com.hsm.service;
 import com.hsm.entity.AppUser;
 import com.hsm.payload.AppUserDto;
 import com.hsm.payload.LoginDto;
+import com.hsm.payload.TokenDto;
 import com.hsm.repository.AppUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
@@ -73,6 +74,13 @@ public class AppUserService {
         }
     }
 
+    public Object tokenNumber(String token) {
+        TokenDto tokenDto = new TokenDto();
+        tokenDto.setToken(token);
+        tokenDto.setType("JWT");
+        return tokenDto;
+    }
+
     // ------------------- GetUserDetails ------------------- //
 
     public AppUserDto findUsername(String username) {
@@ -82,11 +90,10 @@ public class AppUserService {
         return mapToDto(appUserRepository.findByEmail(email).get());
     }
     public List<AppUserDto> getAllUserDetails() {
-        List<AppUser> registrations = appUserRepository.findAll();
-        List<AppUserDto> dto = registrations.stream()
+        return appUserRepository.findAll()
+                .stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
-        return dto;
     }
 
     // ----------------------- Update ----------------------- //

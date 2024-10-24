@@ -3,7 +3,6 @@ package com.hsm.controller;
 import com.hsm.entity.AppUser;
 import com.hsm.payload.AppUserDto;
 import com.hsm.payload.LoginDto;
-import com.hsm.payload.TokenDto;
 import com.hsm.service.AppUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,10 +58,7 @@ public class AppUserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
         String token = appUserService.verifyLogin(loginDto);
         if (token != null) {
-            TokenDto tokenDto = new TokenDto();
-            tokenDto.setToken(token);
-            tokenDto.setType("JWT");
-            return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+            return new ResponseEntity<>(appUserService.tokenNumber(token), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid username/password", HttpStatus.FORBIDDEN);
         }
