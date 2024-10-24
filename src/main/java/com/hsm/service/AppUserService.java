@@ -43,6 +43,12 @@ public class AppUserService {
     public Optional<AppUser> verifySignupEmail(AppUser appUser) {
         return appUserRepository.findByEmail(appUser.getEmail());
     }
+    public void roleSetForOwner(AppUser appUser) {
+        appUser.setRole("ROLE_OWNER");
+    }
+    public void roleSetForUser(AppUser appUser) {
+        appUser.setRole("ROLE_USER");
+    }
     public void encryptPassword(AppUser appUser) {
         appUser.setPassword(BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5)));
     }

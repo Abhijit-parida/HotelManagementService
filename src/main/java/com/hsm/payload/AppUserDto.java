@@ -8,9 +8,11 @@ import lombok.Setter;
 
 public class AppUserDto {
 
+    private String name;
+
+    private String role;
+
     private String username;
 
     private String email;
-
-    private String name;
 }

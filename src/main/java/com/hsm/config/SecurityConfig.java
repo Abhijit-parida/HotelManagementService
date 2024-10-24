@@ -30,10 +30,11 @@ public class SecurityConfig {
         // haap
         //http.authorizeHttpRequests().anyRequest().permitAll();
 
-        // harpaa
+        // harpraa
         http.authorizeHttpRequests()
-                .requestMatchers("/api/v1/users/login", "/api/v1/users/signup")
+                .requestMatchers("/api/v1/users/login", "/api/v1/users/signup-owner", "/api/v1/users/signup-user")
                 .permitAll()
+                .requestMatchers("/api/v1/country/add-country").hasAnyRole("OWNER", "ADMIN")
                 .anyRequest()
                 .authenticated();
 

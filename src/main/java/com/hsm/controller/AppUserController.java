@@ -23,7 +23,22 @@ public class AppUserController {
 
     // ----------------------- SignUp ----------------------- //
 
-    @PostMapping("/signup")
+    @PostMapping("/signup-owner")
+    public ResponseEntity<?> addPropertyOwner(@RequestBody AppUser appUser) {
+        Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUser);
+        if (usernameChecked.isPresent()) {
+            return new ResponseEntity<>("Username already taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Optional<AppUser> emailChecked = appUserService.verifySignupEmail(appUser);
+        if (emailChecked.isPresent()) {
+            return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        appUserService.encryptPassword(appUser);
+        appUserService.roleSetForOwner(appUser);
+        return new ResponseEntity<>(appUserService.addUser(appUser),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signup-user")
     public ResponseEntity<?> addNewUser(@RequestBody AppUser appUser) {
         Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUser);
         if (usernameChecked.isPresent()) {
@@ -34,6 +49,7 @@ public class AppUserController {
             return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         appUserService.encryptPassword(appUser);
+        appUserService.roleSetForUser(appUser);
         return new ResponseEntity<>(appUserService.addUser(appUser),HttpStatus.CREATED);
     }
 
