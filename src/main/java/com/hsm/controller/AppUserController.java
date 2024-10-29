@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -77,7 +78,7 @@ public class AppUserController {
     }
 
     @GetMapping("/all/data")
-    public ResponseEntity<?> getAllUser() {
+    public ResponseEntity<List<AppUserDto>> getAllUser() {
         return new ResponseEntity<>(appUserService.getAllUserDetails(), HttpStatus.OK);
     }
 

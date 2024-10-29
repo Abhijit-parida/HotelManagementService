@@ -1,17 +1,48 @@
 package com.hsm.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.hsm.entity.Country;
+import com.hsm.payload.CountryDto;
+import com.hsm.service.CountryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// only access by owner and admin
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/country")
 public class CountryController {
 
-    @PostMapping("/add-country")
-    public String addCountry() {
-        return "added";
+    private CountryService countryService;
+
+    public CountryController(CountryService countryService) {
+        this.countryService = countryService;
     }
+
+    // ----------------------- Create ----------------------- //
+
+    @PostMapping("/country-name")
+    public ResponseEntity<?> addCountry(@RequestBody CountryDto countryDto) {
+        Optional<Country> verified = countryService.verifyCountry(countryDto);
+        if(verified.isPresent()) {
+            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(countryService.addCountryName(countryDto), HttpStatus.CREATED);
+    }
+
+    // ------------------------ Read ------------------------ //
+
+    @GetMapping("/all/data")
+    public ResponseEntity<List<CountryDto>> getAllCountry() {
+        return new ResponseEntity<>(countryService.getCountryName(), HttpStatus.OK);
+    }
+
+    // ----------------------- Update ----------------------- //
+
+
+
+    // ----------------------- Delete ----------------------- //
+
+
 }
