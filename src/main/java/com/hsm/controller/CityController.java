@@ -41,7 +41,14 @@ public class CityController {
 
     // ----------------------- Update ----------------------- //
 
-
+    @PutMapping("/update")
+    public ResponseEntity<?> updateCity(@RequestParam String cityName,
+                                        @RequestParam String updateCity) {
+        if(cityService.verifyCityName(cityName)) {
+            return new ResponseEntity<>(cityService.updateCityName(cityName,updateCity), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("City Not Found", HttpStatus.NOT_FOUND);
+    }
 
     // ----------------------- Delete ----------------------- //
 

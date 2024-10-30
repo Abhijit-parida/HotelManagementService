@@ -40,7 +40,14 @@ public class CountryController {
 
     // ----------------------- Update ----------------------- //
 
-
+    @PutMapping("/update")
+    public ResponseEntity<?> updateCity(@RequestParam String countryName,
+                                        @RequestParam String updateCountry) {
+        if(countryService.verifyCountryName(countryName)) {
+            return new ResponseEntity<>(countryService.updateCountryName(countryName,updateCountry), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Country Not Found", HttpStatus.NOT_FOUND);
+    }
 
     // ----------------------- Delete ----------------------- //
 

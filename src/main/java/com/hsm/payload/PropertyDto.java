@@ -1,6 +1,5 @@
 package com.hsm.payload;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +17,8 @@ public class PropertyDto {
     private Integer noOfBeds;
 
     private Integer noOfBathrooms;
+
+    private String countryName;
+
+    private String cityName;
 }
