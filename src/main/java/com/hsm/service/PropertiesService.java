@@ -34,7 +34,7 @@ public class PropertiesService {
 
     // ----------------------- Mapping ----------------------- //
 
-    Property mapToEntity(PropertyDto propertyDto) {
+    private Property mapToEntity(PropertyDto propertyDto) {
         return modelMapper.map(propertyDto, Property.class);
     }
 

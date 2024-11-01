@@ -2,10 +2,12 @@ package com.hsm.service;
 
 import com.hsm.entity.City;
 import com.hsm.entity.Country;
+import com.hsm.entity.Property;
 import com.hsm.payload.AppUserDto;
 import com.hsm.payload.CityDto;
 import com.hsm.payload.CountryDto;
 import com.hsm.repository.CountryRepository;
+import com.hsm.repository.PropertyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,13 @@ public class CountryService {
 
     private CountryRepository countryRepository;
     private ModelMapper modelMapper;
+    private final PropertyRepository propertyRepository;
 
-    public CountryService(CountryRepository countryRepository, ModelMapper modelMapper) {
+    public CountryService(CountryRepository countryRepository, ModelMapper modelMapper,
+                          PropertyRepository propertyRepository) {
         this.countryRepository = countryRepository;
         this.modelMapper = modelMapper;
+        this.propertyRepository = propertyRepository;
     }
 
     // ----------------------- Mapping ----------------------- //
@@ -54,10 +59,7 @@ public class CountryService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyCountryName(String countryName) {
-        if(countryRepository.findByCountryName(countryName).isPresent()) {
-            return true;
-        }
-        return false;
+        return countryRepository.findByCountryName(countryName).isPresent();
     }
     public CountryDto updateCountryName(String countryName, String updateCountry) {
         Country country = countryRepository.findByCountryName(countryName).get();
@@ -67,4 +69,7 @@ public class CountryService {
 
     // ----------------------- Delete ----------------------- //
 
+    public void deleteCountry(String countryName) {
+
+    }
 }

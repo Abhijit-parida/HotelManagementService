@@ -51,5 +51,12 @@ public class CountryController {
 
     // ----------------------- Delete ----------------------- //
 
-
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteCountry(@RequestParam String countryName) {
+        if (countryService.verifyCountryName(countryName)) {
+            countryService.deleteCountry(countryName);
+            return new ResponseEntity<>("Country Deleted From Every Connections", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Country Name Not Found", HttpStatus.NOT_FOUND);
+    }
 }
