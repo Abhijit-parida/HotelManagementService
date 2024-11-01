@@ -112,10 +112,7 @@ public class PropertiesService {
     // ----------------------- Delete ----------------------- //
 
     public boolean verifyDeleteId(Long id) {
-        if (propertyRepository.findById(id).isPresent()) {
-            return true;
-        }
-        return false;
+        return propertyRepository.findById(id).isPresent();
     }
     public void deleteProperty(Long id) {
         propertyRepository.deleteById(id);

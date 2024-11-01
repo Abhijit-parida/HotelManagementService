@@ -52,10 +52,7 @@ public class CityService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyCityName(String cityName) {
-        if(cityRepository.findByCityName(cityName).isPresent()) {
-            return true;
-        }
-        return false;
+        return cityRepository.findByCityName(cityName).isPresent();
     }
     public CityDto updateCityName(String cityName, String updateCity) {
         City city = cityRepository.findByCityName(cityName).get();
