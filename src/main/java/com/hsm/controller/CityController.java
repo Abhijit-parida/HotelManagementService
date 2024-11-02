@@ -30,7 +30,7 @@ public class CityController {
 
     // ------------------------ Read ------------------------ //
 
-    @GetMapping("/all/data")
+    @GetMapping("/get/all-data")
     public ResponseEntity<List<CityDto>> getAllCity() {
         return new ResponseEntity<>(cityService.getCityName(), HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class CityController {
         return new ResponseEntity<>(cityService.updateCityId(id,updateCity), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/name")
     public ResponseEntity<?> updateCity(@RequestParam String cityName,
                                         @RequestParam String updateCity) {
         if(cityService.verifyCityName(cityName)) {

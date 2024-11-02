@@ -30,7 +30,7 @@ public class CountryController {
 
     // ------------------------ Read ------------------------ //
 
-    @GetMapping("/all/data")
+    @GetMapping("get/all-data")
     public ResponseEntity<List<CountryDto>> getAllCountry() {
         return new ResponseEntity<>(countryService.getCountryName(), HttpStatus.OK);
     }
