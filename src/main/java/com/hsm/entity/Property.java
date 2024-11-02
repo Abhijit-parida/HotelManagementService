@@ -14,9 +14,6 @@ public class Property {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "hotel_name", nullable = false)
-    private String hotelName;
-
     @Column(name = "no_of_guests", nullable = false)
     private Integer noOfGuests;
 
@@ -36,5 +33,9 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City cityId;
+
+    @ManyToOne
+    @JoinColumn(name = "hotels_id")
+    private Hotels hotelId;
 
 }

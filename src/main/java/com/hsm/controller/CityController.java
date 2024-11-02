@@ -1,15 +1,12 @@
 package com.hsm.controller;
 
-import com.hsm.entity.City;
 import com.hsm.payload.CityDto;
-import com.hsm.payload.CountryDto;
 import com.hsm.service.CityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/city")
@@ -25,8 +22,7 @@ public class CityController {
 
     @PostMapping("/city-name")
     public ResponseEntity<?> addCity(@RequestBody CityDto cityDto) {
-        Optional<City> verified = cityService.verifyCity(cityDto);
-        if (verified.isPresent()) {
+        if (cityService.verifyCity(cityDto)) {
             return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(cityService.addCityName(cityDto), HttpStatus.CREATED);
@@ -41,13 +37,22 @@ public class CityController {
 
     // ----------------------- Update ----------------------- //
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCity(@PathVariable Long id,
+                                        @RequestParam String updateCity){
+        if (cityService.verifyCityId(id)) {
+            return new ResponseEntity<>("Hotel Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(cityService.updateCityId(id,updateCity), HttpStatus.OK);
+    }
+
     @PutMapping("/update")
     public ResponseEntity<?> updateCity(@RequestParam String cityName,
                                         @RequestParam String updateCity) {
         if(cityService.verifyCityName(cityName)) {
-            return new ResponseEntity<>(cityService.updateCityName(cityName,updateCity), HttpStatus.OK);
+            return new ResponseEntity<>("City Not Found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("City Not Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(cityService.updateCityName(cityName,updateCity), HttpStatus.OK);
     }
 
     // ----------------------- Delete ----------------------- //
@@ -57,6 +62,16 @@ public class CityController {
         try {
             cityService.deleteCityById(id);
             return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/name")
+    public ResponseEntity<?> deleteHotel(@RequestParam String cityName) {
+        try {
+            cityService.deleteCityByName(cityName);
+            return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

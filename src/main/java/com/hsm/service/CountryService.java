@@ -3,12 +3,10 @@ package com.hsm.service;
 import com.hsm.entity.Country;
 import com.hsm.payload.CountryDto;
 import com.hsm.repository.CountryRepository;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,12 +15,14 @@ public class CountryService {
     private final CountryRepository countryRepository;
     private final ModelMapper modelMapper;
 
+    // --------------------- Constructor -------------------- //
+
     public CountryService(CountryRepository countryRepository, ModelMapper modelMapper) {
         this.countryRepository = countryRepository;
         this.modelMapper = modelMapper;
     }
 
-    // ----------------------- Mapping ----------------------- //
+    // ---------------------- Mapping ----------------------- //
 
     Country mapToEntity(CountryDto countryDto) {
         return modelMapper.map(countryDto, Country.class);
@@ -34,8 +34,8 @@ public class CountryService {
 
     // ----------------------- Create ----------------------- //
 
-    public Optional<Country> verifyCountry(CountryDto countryDto) {
-        return countryRepository.findByCountryName(mapToEntity(countryDto).getCountryName());
+    public boolean verifyCountry(CountryDto countryDto) {
+        return countryRepository.findByCountryName(countryDto.getCountryName()).isPresent();
     }
 
     public CountryDto addCountryName(CountryDto countryDto) {
@@ -45,16 +45,23 @@ public class CountryService {
     // ------------------------ Read ------------------------ //
 
     public List<CountryDto> getCountryName() {
-        return countryRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+        return countryRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     // ----------------------- Update ----------------------- //
 
+    public boolean verifyCountryId(Long id) {
+        return countryRepository.findById(id).isEmpty();
+    }
+
+    public CountryDto updateCountryId(Long id, String updateCountry) {
+        Country country = countryRepository.findById(id).get();
+        country.setCountryName(updateCountry);
+        return mapToDto(countryRepository.save(country));
+    }
+
     public boolean verifyCountryName(String countryName) {
-        return countryRepository.findByCountryName(countryName).isPresent();
+        return countryRepository.findByCountryName(countryName).isEmpty();
     }
 
     public CountryDto updateCountryName(String countryName, String updateCountry) {
@@ -70,6 +77,14 @@ public class CountryService {
             countryRepository.deleteById(id);
         } else {
             throw new RuntimeException("Country with ID " + id + " does not exist.");
+        }
+    }
+
+    public void deleteCountryByName(String countryName) {
+        if (countryRepository.findByCountryName(countryName).isPresent()) {
+            countryRepository.deleteById(countryRepository.findByCountryName(countryName).get().getId());
+        } else {
+            throw new RuntimeException("Country with name ( " + countryName + " ) does not exist.");
         }
     }
 }

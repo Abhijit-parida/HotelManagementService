@@ -27,7 +27,7 @@ public class AppUserService {
         this.jwtService = jwtService;
     }
 
-    // ----------------------- Mapping ----------------------- //
+    // ---------------------- Mapping ----------------------- //
 
     AppUser mapToEntity(AppUserDto appUserDto) {
         return modelMapper.map(appUserDto, AppUser.class);

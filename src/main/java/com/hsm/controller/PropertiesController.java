@@ -38,10 +38,15 @@ public class PropertiesController {
 
     // ------------------------ Read ------------------------ //
 
-    @GetMapping("/get/data")
+    @GetMapping("/get/all-data")
     public ResponseEntity<List<PropertyDto>> getAllData() {
         return new ResponseEntity<>(propertiesService.getAllProperties(), HttpStatus.OK);
     }
+
+//    @GetMapping("/get/by-hotel-name")
+//    public ResponseEntity<Optional<PropertyDto>> getByHotelName(@RequestParam String hotelName) {
+//        propertiesService.verifyHotelName(hotelName);
+//    }
 
     // ----------------------- Update ----------------------- //
 
