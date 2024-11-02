@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class CountryService {
 
-    private CountryRepository countryRepository;
-    private ModelMapper modelMapper;
+    private final CountryRepository countryRepository;
+    private final ModelMapper modelMapper;
 
     public CountryService(CountryRepository countryRepository, ModelMapper modelMapper) {
         this.countryRepository = countryRepository;

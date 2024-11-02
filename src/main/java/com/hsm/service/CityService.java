@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 @Service
 public class CityService {
 
-    private CityRepository cityRepository;
-    private ModelMapper modelMapper;
+    private final CityRepository cityRepository;
+    private final ModelMapper modelMapper;
 
     public CityService(CityRepository cityRepository, ModelMapper modelMapper) {
         this.cityRepository = cityRepository;

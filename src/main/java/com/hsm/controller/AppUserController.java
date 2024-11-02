@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/users")
 public class AppUserController {
 
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
     public AppUserController(AppUserService appUserService) {
         this.appUserService = appUserService;

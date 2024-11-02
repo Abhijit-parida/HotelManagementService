@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Service
 public class AppUserService {
 
-    private AppUserRepository appUserRepository;
-    private ModelMapper modelMapper;
-    private JWTService jwtService;
+    private final AppUserRepository appUserRepository;
+    private final ModelMapper modelMapper;
+    private final JWTService jwtService;
 
     public AppUserService(AppUserRepository appUserRepository, ModelMapper modelMapper, JWTService jwtService) {
         this.appUserRepository = appUserRepository;

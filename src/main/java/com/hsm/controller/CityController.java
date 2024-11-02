@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/city")
 public class CityController {
 
-    private CityService cityService;
+    private final CityService cityService;
 
     public CityController(CityService cityService) {
         this.cityService = cityService;
