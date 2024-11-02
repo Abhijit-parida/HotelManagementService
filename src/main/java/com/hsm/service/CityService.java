@@ -4,6 +4,7 @@ import com.hsm.entity.City;
 import com.hsm.payload.CityDto;
 import com.hsm.payload.CountryDto;
 import com.hsm.repository.CityRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +61,13 @@ public class CityService {
         return mapToDto(cityRepository.save(city));
     }
 
-
     // ----------------------- Delete ----------------------- //
 
+    public void deleteCityById(Long id) {
+        if (cityRepository.findById(id).isPresent()) {
+            cityRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Country with ID " + id + " does not exist.");
+        }
+    }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -17,4 +19,6 @@ public class Country {
     @Column(name = "country_name", nullable = false)
     private String countryName;
 
+    @OneToMany(mappedBy = "countryId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> properties;
 }

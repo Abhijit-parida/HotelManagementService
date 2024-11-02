@@ -1,13 +1,9 @@
 package com.hsm.service;
 
-import com.hsm.entity.City;
 import com.hsm.entity.Country;
-import com.hsm.entity.Property;
-import com.hsm.payload.AppUserDto;
-import com.hsm.payload.CityDto;
 import com.hsm.payload.CountryDto;
 import com.hsm.repository.CountryRepository;
-import com.hsm.repository.PropertyRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +16,10 @@ public class CountryService {
 
     private CountryRepository countryRepository;
     private ModelMapper modelMapper;
-    private final PropertyRepository propertyRepository;
 
-    public CountryService(CountryRepository countryRepository, ModelMapper modelMapper,
-                          PropertyRepository propertyRepository) {
+    public CountryService(CountryRepository countryRepository, ModelMapper modelMapper) {
         this.countryRepository = countryRepository;
         this.modelMapper = modelMapper;
-        this.propertyRepository = propertyRepository;
     }
 
     // ----------------------- Mapping ----------------------- //
@@ -34,6 +27,7 @@ public class CountryService {
     Country mapToEntity(CountryDto countryDto) {
         return modelMapper.map(countryDto, Country.class);
     }
+
     CountryDto mapToDto(Country country) {
         return modelMapper.map(country, CountryDto.class);
     }
@@ -43,6 +37,7 @@ public class CountryService {
     public Optional<Country> verifyCountry(CountryDto countryDto) {
         return countryRepository.findByCountryName(mapToEntity(countryDto).getCountryName());
     }
+
     public CountryDto addCountryName(CountryDto countryDto) {
         return mapToDto(countryRepository.save(mapToEntity(countryDto)));
     }
@@ -50,10 +45,10 @@ public class CountryService {
     // ------------------------ Read ------------------------ //
 
     public List<CountryDto> getCountryName() {
-      return countryRepository.findAll()
-              .stream()
-              .map(this::mapToDto)
-              .collect(Collectors.toList());
+        return countryRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
     }
 
     // ----------------------- Update ----------------------- //
@@ -61,6 +56,7 @@ public class CountryService {
     public boolean verifyCountryName(String countryName) {
         return countryRepository.findByCountryName(countryName).isPresent();
     }
+
     public CountryDto updateCountryName(String countryName, String updateCountry) {
         Country country = countryRepository.findByCountryName(countryName).get();
         country.setCountryName(updateCountry);
@@ -69,7 +65,11 @@ public class CountryService {
 
     // ----------------------- Delete ----------------------- //
 
-    public void deleteCountry(String countryName) {
-
+    public void deleteCountryById(Long id) {
+        if (countryRepository.findById(id).isPresent()) {
+            countryRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Country with ID " + id + " does not exist.");
+        }
     }
 }

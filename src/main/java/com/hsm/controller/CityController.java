@@ -52,4 +52,13 @@ public class CityController {
 
     // ----------------------- Delete ----------------------- //
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCity(@PathVariable Long id) {
+        try {
+            cityService.deleteCityById(id);
+            return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
