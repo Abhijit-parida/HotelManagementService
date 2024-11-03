@@ -38,23 +38,23 @@ public class AppUserService {
 
     // ----------------------- SignUp ----------------------- //
 
-    public Optional<AppUser> verifySignupUsername(AppUser appUser) {
-        return appUserRepository.findByUsername(appUser.getUsername());
+    public boolean verifySignupUsername(AppUserDto appUserDto) {
+        return appUserRepository.findByUsername(appUserDto.getUsername()).isPresent();
     }
-    public Optional<AppUser> verifySignupEmail(AppUser appUser) {
-        return appUserRepository.findByEmail(appUser.getEmail());
+    public boolean verifySignupEmail(AppUserDto appUserDto) {
+        return appUserRepository.findByEmail(appUserDto.getEmail()).isPresent();
     }
-    public void roleSetForOwner(AppUser appUser) {
-        appUser.setRole("ROLE_OWNER");
+    public void encryptPassword(AppUserDto appUserDto) {
+        appUserDto.setPassword(BCrypt.hashpw(appUserDto.getPassword(), BCrypt.gensalt(5)));
     }
-    public void roleSetForUser(AppUser appUser) {
-        appUser.setRole("ROLE_USER");
+    public void setRoleForOwner(AppUserDto appUserDto) {
+        appUserDto.setRole("ROLE_OWNER");
     }
-    public void encryptPassword(AppUser appUser) {
-        appUser.setPassword(BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5)));
+    public void setRoleForUser(AppUserDto appUserDto) {
+        appUserDto.setRole("ROLE_USER");
     }
-    public AppUserDto addUser(AppUser appUser) {
-        return mapToDto(appUserRepository.save(appUser));
+    public AppUserDto addUser(AppUserDto appUserDto) {
+        return mapToDto(appUserRepository.save(mapToEntity(appUserDto)));
     }
 
     // ----------------------- SignIn ----------------------- //

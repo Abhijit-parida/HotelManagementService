@@ -24,33 +24,29 @@ public class AppUserController {
     // ----------------------- SignUp ----------------------- //
 
     @PostMapping("/signup-owner")
-    public ResponseEntity<?> addPropertyOwner(@RequestBody AppUser appUser) {
-        Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUser);
-        if (usernameChecked.isPresent()) {
+    public ResponseEntity<?> addPropertyOwner(@RequestBody AppUserDto appUserDto) {
+        if (appUserService.verifySignupUsername(appUserDto)) {
             return new ResponseEntity<>("Username already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Optional<AppUser> emailChecked = appUserService.verifySignupEmail(appUser);
-        if (emailChecked.isPresent()) {
+        if (appUserService.verifySignupEmail(appUserDto)) {
             return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        appUserService.encryptPassword(appUser);
-        appUserService.roleSetForOwner(appUser);
-        return new ResponseEntity<>(appUserService.addUser(appUser),HttpStatus.CREATED);
+        appUserService.encryptPassword(appUserDto);
+        appUserService.setRoleForOwner(appUserDto);
+        return new ResponseEntity<>(appUserService.addUser(appUserDto),HttpStatus.CREATED);
     }
 
     @PostMapping("/signup-user")
-    public ResponseEntity<?> addNewUser(@RequestBody AppUser appUser) {
-        Optional<AppUser> usernameChecked = appUserService.verifySignupUsername(appUser);
-        if (usernameChecked.isPresent()) {
+    public ResponseEntity<?> addNewUser(@RequestBody AppUserDto appUserDto) {
+        if (appUserService.verifySignupUsername(appUserDto)) {
             return new ResponseEntity<>("Username already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Optional<AppUser> emailChecked = appUserService.verifySignupEmail(appUser);
-        if (emailChecked.isPresent()) {
+        if (appUserService.verifySignupEmail(appUserDto)) {
             return new ResponseEntity<>("Email already taken", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        appUserService.encryptPassword(appUser);
-        appUserService.roleSetForUser(appUser);
-        return new ResponseEntity<>(appUserService.addUser(appUser),HttpStatus.CREATED);
+        appUserService.encryptPassword(appUserDto);
+        appUserService.setRoleForUser(appUserDto);
+        return new ResponseEntity<>(appUserService.addUser(appUserDto),HttpStatus.CREATED);
     }
 
     // ----------------------- SignIn ----------------------- //
@@ -78,7 +74,7 @@ public class AppUserController {
     }
 
     @GetMapping("/all/data")
-    public ResponseEntity<List<AppUserDto>> getAllUser() {
+    public ResponseEntity<List<AppUserDto>> getAllInfo() {
         return new ResponseEntity<>(appUserService.getAllUserDetails(), HttpStatus.OK);
     }
 

@@ -2,6 +2,7 @@ package com.hsm.controller;
 
 import com.hsm.entity.City;
 import com.hsm.entity.Country;
+import com.hsm.entity.Hotels;
 import com.hsm.payload.PropertyDto;
 import com.hsm.service.PropertiesService;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,10 @@ public class PropertiesController {
         if (city.isEmpty()) {
             return new ResponseEntity<>("City Name Is Not Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        Optional<Hotels> hotels = propertiesService.verifyHotel(propertyDto);
+        if (hotels.isEmpty()) {
+            return new ResponseEntity<>("Hotel Name Is Not Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(propertiesService.addProperties(propertyDto), HttpStatus.CREATED);
     }
 
@@ -43,10 +48,6 @@ public class PropertiesController {
         return new ResponseEntity<>(propertiesService.getAllProperties(), HttpStatus.OK);
     }
 
-//    @GetMapping("/get/by-hotel-name")
-//    public ResponseEntity<Optional<PropertyDto>> getByHotelName(@RequestParam String hotelName) {
-//        propertiesService.verifyHotelName(hotelName);
-//    }
 
     // ----------------------- Update ----------------------- //
 
