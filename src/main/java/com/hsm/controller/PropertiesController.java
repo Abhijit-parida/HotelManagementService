@@ -1,8 +1,5 @@
 package com.hsm.controller;
 
-import com.hsm.entity.City;
-import com.hsm.entity.Country;
-import com.hsm.entity.Hotels;
 import com.hsm.payload.PropertyDto;
 import com.hsm.service.PropertiesService;
 import org.springframework.http.HttpStatus;
@@ -26,19 +23,10 @@ public class PropertiesController {
 
     @PostMapping("/add-properties")
     public ResponseEntity<?> addProperties(@RequestBody PropertyDto propertyDto) {
-        Optional<Country> country = propertiesService.verifyCountry(propertyDto);
-        if (country.isEmpty()) {
-            return new ResponseEntity<>("Country Name Is Not Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (propertiesService.verifyLocation(propertyDto)) {
+            return new ResponseEntity<>(propertiesService.addProperties(propertyDto), HttpStatus.CREATED);
         }
-        Optional<City> city = propertiesService.verifyCity(propertyDto);
-        if (city.isEmpty()) {
-            return new ResponseEntity<>("City Name Is Not Exists", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        Optional<Hotels> hotels = propertiesService.verifyHotel(propertyDto);
-        if (hotels.isEmpty()) {
-            return new ResponseEntity<>("Hotel Name Is Not Exists", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(propertiesService.addProperties(propertyDto), HttpStatus.CREATED);
+        return new ResponseEntity<>("Given Location not matched with Country or City", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // ------------------------ Read ------------------------ //

@@ -1,17 +1,13 @@
 package com.hsm.service;
 
-import com.hsm.entity.City;
-import com.hsm.entity.Country;
-import com.hsm.entity.Hotels;
-import com.hsm.entity.Property;
+import com.hsm.entity.*;
+import com.hsm.payload.LocationDto;
 import com.hsm.payload.PropertyDto;
-import com.hsm.repository.CityRepository;
-import com.hsm.repository.CountryRepository;
-import com.hsm.repository.HotelsRepository;
-import com.hsm.repository.PropertyRepository;
+import com.hsm.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,17 +18,20 @@ public class PropertiesService {
     private final CityRepository cityRepository;
     private final CountryRepository countryRepository;
     private final HotelsRepository hotelsRepository;
+    private final LocationRepository locationRepository;
 
     // --------------------- Constructor -------------------- //
 
     public PropertiesService(PropertyRepository propertyRepository,
                              CityRepository cityRepository,
                              CountryRepository countryRepository,
-                             HotelsRepository hotelsRepository) {
+                             HotelsRepository hotelsRepository,
+                             LocationRepository locationRepository) {
         this.propertyRepository = propertyRepository;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
         this.hotelsRepository = hotelsRepository;
+        this.locationRepository = locationRepository;
     }
 
     // --------------------- Converting --------------------- //
@@ -46,6 +45,7 @@ public class PropertiesService {
         countryRepository.findByCountryName(propertyDto.getCountryName()).ifPresent(property::setCountryId);
         cityRepository.findByCityName(propertyDto.getCityName()).ifPresent(property::setCityId);
         hotelsRepository.findByHotelName(propertyDto.getHotelName()).ifPresent(property::setHotelId);
+        locationRepository.findByLocationName(propertyDto.getLocationName()).ifPresent(property::setLocationId);
         return property;
     }
 
@@ -58,21 +58,26 @@ public class PropertiesService {
         dto.setCountryName(property.getCountryId().getCountryName());
         dto.setCityName(property.getCityId().getCityName());
         dto.setHotelName(property.getHotelId().getHotelName());
+        dto.setLocationName(property.getLocationId().getLocationName());
         return dto;
     }
 
     // ----------------------- Create ----------------------- //
 
-    public Optional<Country> verifyCountry(PropertyDto propertyDto) {
-        return countryRepository.findByCountryName(propertyDto.getCountryName());
-    }
-
-    public Optional<City> verifyCity(PropertyDto propertyDto) {
-        return cityRepository.findByCityName(propertyDto.getCityName());
-    }
-
-    public Optional<Hotels> verifyHotel(PropertyDto propertyDto) {
-        return hotelsRepository.findByHotelName(propertyDto.getHotelName());
+    public Boolean verifyLocation(PropertyDto propertyDto) {
+        Optional<Location> byLocationName = locationRepository.findByLocationName(propertyDto.getLocationName());
+        if (byLocationName.isPresent()) {
+            LocationDto locationDto = new LocationDto();
+            locationDto.setCountryName(byLocationName.get().getCountryId().getCountryName());
+            locationDto.setCityName(byLocationName.get().getCityId().getCityName());
+            if (locationDto.getCountryName().equals(propertyDto.getCountryName())) {
+                return locationDto.getCityName().equals(propertyDto.getCityName());
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public PropertyDto addProperties (PropertyDto propertyDto) {
