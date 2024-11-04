@@ -36,7 +36,7 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private City stateId;
+    private State stateId;
 
     @ManyToOne
     @JoinColumn(name = "location_id")

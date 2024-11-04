@@ -12,6 +12,8 @@ public class PropertyDto {
 
     private String countryName;
 
+    private String stateName;
+
     private String cityName;
 
     private String locationName;
