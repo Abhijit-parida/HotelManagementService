@@ -50,22 +50,22 @@ public class HotelService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyHotelsId(Long id) {
-        return hotelsRepository.findById(id).isEmpty();
+        return hotelsRepository.findById(id).isPresent();
     }
 
-    public HotelDto updateHotelId(Long id, String updateHotelName) {
+    public HotelDto updateHotelId(Long id, String updateHotel) {
         Hotels hotels = hotelsRepository.findById(id).get();
-        hotels.setHotelName(updateHotelName);
+        hotels.setHotelName(updateHotel);
         return mapToDto(hotelsRepository.save(hotels));
     }
 
     public boolean verifyHotelsName(String hotelName) {
-        return hotelsRepository.findByHotelName(hotelName).isEmpty();
+        return hotelsRepository.findByHotelName(hotelName).isPresent();
     }
 
-    public HotelDto updateHotelName(String hotelName, String updateHotelName) {
+    public HotelDto updateHotelName(String hotelName, String updateHotel) {
         Hotels hotels = hotelsRepository.findByHotelName(hotelName).get();
-        hotels.setHotelName(updateHotelName);
+        hotels.setHotelName(updateHotel);
         return mapToDto(hotelsRepository.save(hotels));
     }
 

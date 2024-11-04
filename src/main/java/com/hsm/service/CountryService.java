@@ -51,7 +51,7 @@ public class CountryService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyCountryId(Long id) {
-        return countryRepository.findById(id).isEmpty();
+        return countryRepository.findById(id).isPresent();
     }
 
     public CountryDto updateCountryId(Long id, String updateCountry) {
@@ -61,7 +61,7 @@ public class CountryService {
     }
 
     public boolean verifyCountryName(String countryName) {
-        return countryRepository.findByCountryName(countryName).isEmpty();
+        return countryRepository.findByCountryName(countryName).isPresent();
     }
 
     public CountryDto updateCountryName(String countryName, String updateCountry) {

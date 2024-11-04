@@ -23,7 +23,7 @@ public class HotelController {
     @PostMapping("/hotel-name")
     public ResponseEntity<?> addHotels(@RequestBody HotelDto hotelDto) {
         if (hotelService.verifyHotelName(hotelDto)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Hotel Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(hotelService.addHotels(hotelDto), HttpStatus.CREATED);
     }
@@ -39,20 +39,21 @@ public class HotelController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateHotelName(@PathVariable Long id,
-                                             @RequestParam String updateHotelName){
+                                             @RequestParam String updateHotel){
         if (hotelService.verifyHotelsId(id)) {
-            return new ResponseEntity<>("Hotel Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(hotelService.updateHotelId(id,updateHotel), HttpStatus.OK);
         }
-        return new ResponseEntity<>(hotelService.updateHotelId(id,updateHotelName), HttpStatus.OK);
+        return new ResponseEntity<>("Hotel Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/update/name")
     public ResponseEntity<?> updateHotelName(@RequestParam String hotelName,
-                                             @RequestParam String updateHotelName) {
+                                             @RequestParam String updateHotel) {
         if (hotelService.verifyHotelsName(hotelName)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(hotelService.updateHotelName(hotelName,updateHotel), HttpStatus.OK);
         }
-        return new ResponseEntity<>(hotelService.updateHotelName(hotelName,updateHotelName), HttpStatus.OK);
+        return new ResponseEntity<>("Hotel Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     // ----------------------- Delete ----------------------- //

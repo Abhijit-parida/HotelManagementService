@@ -51,7 +51,7 @@ public class StateService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyStateId(Long id) {
-        return stateRepository.findById(id).isEmpty();
+        return stateRepository.findById(id).isPresent();
     }
 
     public StateDto updateStateId(Long id, String updateState) {
@@ -61,7 +61,7 @@ public class StateService {
     }
 
     public boolean verifyStateName(String stateName) {
-        return stateRepository.findByStateName(stateName).isEmpty();
+        return stateRepository.findByStateName(stateName).isPresent();
     }
 
     public StateDto updateStateName(String stateName, String updateState) {
@@ -76,7 +76,7 @@ public class StateService {
         if (stateRepository.findById(id).isPresent()) {
             stateRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Country with ID " + id + " does not exist.");
+            throw new RuntimeException("State with ID " + id + " does not exist.");
         }
     }
 
@@ -84,7 +84,7 @@ public class StateService {
         if (stateRepository.findByStateName(stateName).isPresent()) {
             stateRepository.deleteById(stateRepository.findByStateName(stateName).get().getId());
         } else {
-            throw new RuntimeException("Country with name ( " + stateName + " ) does not exist.");
+            throw new RuntimeException("State with name ( " + stateName + " ) does not exist.");
         }
     }
 }

@@ -23,7 +23,7 @@ public class CountryController {
     @PostMapping("/country-name")
     public ResponseEntity<?> addCountry(@RequestBody CountryDto countryDto) {
         if(countryService.verifyCountry(countryDto)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Country Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(countryService.addCountryName(countryDto), HttpStatus.CREATED);
     }
@@ -38,21 +38,21 @@ public class CountryController {
     // ----------------------- Update ----------------------- //
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCityName(@PathVariable Long id,
+    public ResponseEntity<?> updateCountryName(@PathVariable Long id,
                                             @RequestParam String updateCountry){
         if (countryService.verifyCountryId(id)) {
-            return new ResponseEntity<>("Country Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(countryService.updateCountryId(id,updateCountry), HttpStatus.OK);
         }
-        return new ResponseEntity<>(countryService.updateCountryId(id,updateCountry), HttpStatus.OK);
+        return new ResponseEntity<>("Id of the country is not found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/update/name")
-    public ResponseEntity<?> updateCityName(@RequestParam String countryName,
+    public ResponseEntity<?> updateCountryName(@RequestParam String countryName,
                                             @RequestParam String updateCountry) {
         if(countryService.verifyCountryName(countryName)) {
-            return new ResponseEntity<>("Country Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(countryService.updateCountryName(countryName,updateCountry), HttpStatus.OK);
         }
-        return new ResponseEntity<>(countryService.updateCountryName(countryName,updateCountry), HttpStatus.OK);
+        return new ResponseEntity<>("Name of the country is not found", HttpStatus.NOT_FOUND);
     }
 
     // ----------------------- Delete ----------------------- //
@@ -71,7 +71,7 @@ public class CountryController {
     public ResponseEntity<?> deleteCountry(@RequestParam String countryName) {
         try {
             countryService.deleteCountryByName(countryName);
-            return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

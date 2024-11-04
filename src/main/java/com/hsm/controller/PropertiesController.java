@@ -39,11 +39,11 @@ public class PropertiesController {
 
     // ----------------------- Update ----------------------- //
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Optional<PropertyDto>> updateData(@PathVariable Long id,
-                                                            @RequestBody PropertyDto propertyDto) {
-        return new ResponseEntity<>(propertiesService.updateProperty(id,propertyDto), HttpStatus.OK);
-    }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<Optional<PropertyDto>> updateData(@PathVariable Long id,
+//                                                            @RequestBody PropertyDto propertyDto) {
+//        return new ResponseEntity<>(propertiesService.updateProperty(id,propertyDto), HttpStatus.OK);
+//    }
 
     // ----------------------- Delete ----------------------- //
 

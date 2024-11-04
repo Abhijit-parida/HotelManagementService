@@ -23,7 +23,7 @@ public class LocationController {
     @PostMapping("/add-location")
     public ResponseEntity<?> addLocations(@RequestBody LocationDto locationDto) {
         if (locationService.verifyLocation(locationDto)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Location Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(locationService.addLocations(locationDto), HttpStatus.CREATED);
     }
@@ -31,7 +31,7 @@ public class LocationController {
     // ------------------------ Read ------------------------ //
 
     @GetMapping("/get/all-data")
-    public ResponseEntity<List<LocationDto>> getAllData() {
-        return new ResponseEntity<>(locationService.getAllProperties(), HttpStatus.OK);
+    public ResponseEntity<List<LocationDto>> getAllLocation() {
+        return new ResponseEntity<>(locationService.getAllLocations(), HttpStatus.OK);
     }
 }

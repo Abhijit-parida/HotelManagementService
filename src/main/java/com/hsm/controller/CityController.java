@@ -23,7 +23,7 @@ public class CityController {
     @PostMapping("/city-name")
     public ResponseEntity<?> addCity(@RequestBody CityDto cityDto) {
         if (cityService.verifyCity(cityDto)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("City Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(cityService.addCityName(cityDto), HttpStatus.CREATED);
     }
@@ -41,18 +41,18 @@ public class CityController {
     public ResponseEntity<?> updateCity(@PathVariable Long id,
                                         @RequestParam String updateCity){
         if (cityService.verifyCityId(id)) {
-            return new ResponseEntity<>("Hotel Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(cityService.updateCityId(id,updateCity), HttpStatus.OK);
         }
-        return new ResponseEntity<>(cityService.updateCityId(id,updateCity), HttpStatus.OK);
+        return new ResponseEntity<>("City Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/update/name")
     public ResponseEntity<?> updateCity(@RequestParam String cityName,
                                         @RequestParam String updateCity) {
         if(cityService.verifyCityName(cityName)) {
-            return new ResponseEntity<>("City Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(cityService.updateCityName(cityName,updateCity), HttpStatus.OK);
         }
-        return new ResponseEntity<>(cityService.updateCityName(cityName,updateCity), HttpStatus.OK);
+        return new ResponseEntity<>("City Not Found", HttpStatus.NOT_FOUND);
     }
 
     // ----------------------- Delete ----------------------- //
@@ -61,17 +61,17 @@ public class CityController {
     public ResponseEntity<?> deleteCity(@PathVariable Long id) {
         try {
             cityService.deleteCityById(id);
-            return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("City deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/delete/name")
-    public ResponseEntity<?> deleteHotel(@RequestParam String cityName) {
+    public ResponseEntity<?> deleteCity(@RequestParam String cityName) {
         try {
             cityService.deleteCityByName(cityName);
-            return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("City deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

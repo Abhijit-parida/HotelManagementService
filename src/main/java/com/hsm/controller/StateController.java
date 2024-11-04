@@ -23,7 +23,7 @@ public class StateController {
     @PostMapping("/state-name")
     public ResponseEntity<?> addStateName(@RequestBody StateDto stateDto) {
         if(stateService.verifyState(stateDto)) {
-            return new ResponseEntity<>("Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("State Already Exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(stateService.addStateName(stateDto), HttpStatus.CREATED);
     }
@@ -31,47 +31,47 @@ public class StateController {
     // ------------------------ Read ------------------------ //
 
     @GetMapping("get/all-data")
-    public ResponseEntity<List<StateDto>> getAllCountry() {
+    public ResponseEntity<List<StateDto>> getAllState() {
         return new ResponseEntity<>(stateService.getStateName(), HttpStatus.OK);
     }
 
     // ----------------------- Update ----------------------- //
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCityName(@PathVariable Long id,
+    public ResponseEntity<?> updateStateName(@PathVariable Long id,
                                             @RequestParam String updateState){
         if (stateService.verifyStateId(id)) {
-            return new ResponseEntity<>("Country Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(stateService.updateStateId(id,updateState), HttpStatus.OK);
         }
-        return new ResponseEntity<>(stateService.updateStateId(id,updateState), HttpStatus.OK);
+        return new ResponseEntity<>("State Not Found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/update/name")
-    public ResponseEntity<?> updateCityName(@RequestParam String stateName,
+    public ResponseEntity<?> updateStateName(@RequestParam String stateName,
                                             @RequestParam String updateState) {
         if(stateService.verifyStateName(stateName)) {
-            return new ResponseEntity<>("Country Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(stateService.updateStateName(stateName,updateState), HttpStatus.OK);
         }
-        return new ResponseEntity<>(stateService.updateStateName(stateName,updateState), HttpStatus.OK);
+        return new ResponseEntity<>("State Not Found", HttpStatus.NOT_FOUND);
     }
 
     // ----------------------- Delete ----------------------- //
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCountry(@PathVariable Long id) {
+    public ResponseEntity<?> deleteState(@PathVariable Long id) {
         try {
             stateService.deleteStateById(id);
-            return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("State deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/delete/name")
-    public ResponseEntity<?> deleteCountry(@RequestParam String countryName) {
+    public ResponseEntity<?> deleteState(@RequestParam String stateName) {
         try {
-            stateService.deleteStateByName(countryName);
-            return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
+            stateService.deleteStateByName(stateName);
+            return new ResponseEntity<>("State deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

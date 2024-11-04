@@ -62,7 +62,7 @@ public class LocationService {
 
     // ------------------------ Read ------------------------ //
 
-    public List<LocationDto> getAllProperties() {
+    public List<LocationDto> getAllLocations() {
         return locationRepository.findAll().stream().map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }

@@ -49,7 +49,7 @@ public class CityService {
     // ----------------------- Update ----------------------- //
 
     public boolean verifyCityId(Long id) {
-        return cityRepository.findById(id).isEmpty();
+        return cityRepository.findById(id).isPresent();
     }
 
     public CityDto updateCityId(Long id, String updateCity) {
@@ -59,7 +59,7 @@ public class CityService {
     }
 
     public boolean verifyCityName(String cityName) {
-        return cityRepository.findByCityName(cityName).isEmpty();
+        return cityRepository.findByCityName(cityName).isPresent();
     }
     public CityDto updateCityName(String cityName, String updateCity) {
         City city = cityRepository.findByCityName(cityName).get();
@@ -73,7 +73,7 @@ public class CityService {
         if (cityRepository.findById(id).isPresent()) {
             cityRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Country with ID " + id + " does not exist.");
+            throw new RuntimeException("City with ID " + id + " does not exist.");
         }
     }
 
@@ -81,7 +81,7 @@ public class CityService {
         if (cityRepository.findByCityName(cityName).isPresent()) {
             cityRepository.deleteById(cityRepository.findByCityName(cityName).get().getId());
         } else {
-            throw new RuntimeException("Hotel with name ( " + cityName + " ) does not exist.");
+            throw new RuntimeException("City with name ( " + cityName + " ) does not exist.");
         }
     }
 }
