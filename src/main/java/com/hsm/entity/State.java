@@ -9,19 +9,19 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "city")
-public class City {
+@Table(name = "state")
+public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "city_name", nullable = false)
-    private String cityName;
+    @Column(name = "state_name", nullable = false)
+    private String stateName;
 
-    @OneToMany(mappedBy = "cityId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Property> properties;
 
-    @OneToMany(mappedBy = "cityId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations;
 }

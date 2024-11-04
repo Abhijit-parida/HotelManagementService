@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -25,4 +27,10 @@ public class Location {
     @JoinColumn(name = "country_id")
     private Country countryId;
 
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State stateId;
+
+    @OneToMany(mappedBy = "locationId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> properties;
 }

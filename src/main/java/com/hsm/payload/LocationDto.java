@@ -11,5 +11,7 @@ public class LocationDto {
 
     private String countryName;
 
+    private String stateName;
+
     private String cityName;
 }

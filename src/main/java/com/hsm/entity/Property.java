@@ -35,6 +35,10 @@ public class Property {
     private City cityId;
 
     @ManyToOne
+    @JoinColumn(name = "state_id")
+    private City stateId;
+
+    @ManyToOne
     @JoinColumn(name = "location_id")
     private Location locationId;
 
