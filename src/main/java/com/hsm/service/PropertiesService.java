@@ -19,6 +19,7 @@ public class PropertiesService {
     private final CountryRepository countryRepository;
     private final HotelsRepository hotelsRepository;
     private final LocationRepository locationRepository;
+    private final StateRepository stateRepository;
 
     // --------------------- Constructor -------------------- //
 
@@ -26,12 +27,14 @@ public class PropertiesService {
                              CityRepository cityRepository,
                              CountryRepository countryRepository,
                              HotelsRepository hotelsRepository,
-                             LocationRepository locationRepository) {
+                             LocationRepository locationRepository,
+                             StateRepository stateRepository) {
         this.propertyRepository = propertyRepository;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
         this.hotelsRepository = hotelsRepository;
         this.locationRepository = locationRepository;
+        this.stateRepository = stateRepository;
     }
 
     // --------------------- Converting --------------------- //
@@ -43,9 +46,10 @@ public class PropertiesService {
         property.setNoOfBeds(propertyDto.getNoOfBeds());
         property.setNoOfBathrooms(propertyDto.getNoOfBathrooms());
         countryRepository.findByCountryName(propertyDto.getCountryName()).ifPresent(property::setCountryId);
+        stateRepository.findByStateName(propertyDto.getStateName()).ifPresent(property::setStateId);
         cityRepository.findByCityName(propertyDto.getCityName()).ifPresent(property::setCityId);
-        hotelsRepository.findByHotelName(propertyDto.getHotelName()).ifPresent(property::setHotelId);
         locationRepository.findByLocationName(propertyDto.getLocationName()).ifPresent(property::setLocationId);
+        hotelsRepository.findByHotelName(propertyDto.getHotelName()).ifPresent(property::setHotelId);
         return property;
     }
 
@@ -56,9 +60,10 @@ public class PropertiesService {
         dto.setNoOfBeds(property.getNoOfBeds());
         dto.setNoOfBathrooms(property.getNoOfBathrooms());
         dto.setCountryName(property.getCountryId().getCountryName());
+        dto.setStateName(property.getStateId().getStateName());
         dto.setCityName(property.getCityId().getCityName());
-        dto.setHotelName(property.getHotelId().getHotelName());
         dto.setLocationName(property.getLocationId().getLocationName());
+        dto.setHotelName(property.getHotelId().getHotelName());
         return dto;
     }
 
@@ -69,9 +74,14 @@ public class PropertiesService {
         if (byLocationName.isPresent()) {
             LocationDto locationDto = new LocationDto();
             locationDto.setCountryName(byLocationName.get().getCountryId().getCountryName());
+            locationDto.setStateName(byLocationName.get().getStateId().getStateName());
             locationDto.setCityName(byLocationName.get().getCityId().getCityName());
             if (locationDto.getCountryName().equals(propertyDto.getCountryName())) {
-                return locationDto.getCityName().equals(propertyDto.getCityName());
+                if (locationDto.getStateName().equals(propertyDto.getStateName())) {
+                    return locationDto.getCityName().equals(propertyDto.getCityName());
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

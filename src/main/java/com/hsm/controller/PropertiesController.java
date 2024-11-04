@@ -26,7 +26,7 @@ public class PropertiesController {
         if (propertiesService.verifyLocation(propertyDto)) {
             return new ResponseEntity<>(propertiesService.addProperties(propertyDto), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("Given Location not matched with Country or City", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Given Location not matched with Country, State or City", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // ------------------------ Read ------------------------ //
