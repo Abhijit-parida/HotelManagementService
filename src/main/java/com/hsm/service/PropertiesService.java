@@ -103,21 +103,21 @@ public class PropertiesService {
 
     // ----------------------- Update ----------------------- //
 
-    public Optional<PropertyDto> updateProperty(Long id, PropertyDto propertyDto) {
-        Optional<Property> opData = propertyRepository.findById(id);
-        if (opData.isPresent()) {
-            Property property = opData.get();
-            property.setNoOfGuests(propertyDto.getNoOfGuests());
-            property.setNoOfBedrooms(propertyDto.getNoOfBedrooms());
-            property.setNoOfBeds(propertyDto.getNoOfBeds());
-            property.setNoOfBathrooms(propertyDto.getNoOfBathrooms());
-            countryRepository.findByCountryName(propertyDto.getCountryName()).ifPresent(property::setCountryId);
-            cityRepository.findByCityName(propertyDto.getCityName()).ifPresent(property::setCityId);
-            hotelsRepository.findByHotelName(propertyDto.getHotelName()).ifPresent(property::setHotelId);
-            return Optional.of(convertEntityToDto(propertyRepository.save(property)));
-        }
-        return Optional.empty();
-    }
+//    public Optional<PropertyDto> updateProperty(Long id, PropertyDto propertyDto) {
+//        Optional<Property> opData = propertyRepository.findById(id);
+//        if (opData.isPresent()) {
+//            Property property = opData.get();
+//            property.setNoOfGuests(propertyDto.getNoOfGuests());
+//            property.setNoOfBedrooms(propertyDto.getNoOfBedrooms());
+//            property.setNoOfBeds(propertyDto.getNoOfBeds());
+//            property.setNoOfBathrooms(propertyDto.getNoOfBathrooms());
+//            countryRepository.findByCountryName(propertyDto.getCountryName()).ifPresent(property::setCountryId);
+//            cityRepository.findByCityName(propertyDto.getCityName()).ifPresent(property::setCityId);
+//            hotelsRepository.findByHotelName(propertyDto.getHotelName()).ifPresent(property::setHotelId);
+//            return Optional.of(convertEntityToDto(propertyRepository.save(property)));
+//        }
+//        return Optional.empty();
+//    }
 
     // ----------------------- Delete ----------------------- //
 
