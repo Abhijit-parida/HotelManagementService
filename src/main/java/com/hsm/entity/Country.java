@@ -1,5 +1,6 @@
 package com.hsm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class Country {
     private String countryName;
 
     @OneToMany(mappedBy = "countryId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Property> properties;
 }

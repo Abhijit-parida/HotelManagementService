@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v2/property")
+@RequestMapping("/api/v1/properties")
 public class PropertiesController {
 
     private final PropertiesService propertiesService;

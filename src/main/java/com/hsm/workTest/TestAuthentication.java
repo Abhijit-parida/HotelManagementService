@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v2/test")
-public class CheckTest {
+@RequestMapping("/api/v1/test")
+public class TestAuthentication {
 
     @PostMapping("/add")
     public AppUser addAnything(@AuthenticationPrincipal AppUser appUser) {
