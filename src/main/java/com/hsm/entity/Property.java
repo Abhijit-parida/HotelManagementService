@@ -17,8 +17,8 @@ public class Property {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "hotel_name", nullable = false)
-    private String hotelName;
+//    @Column(name = "hotel_name", nullable = false)
+//    private String hotelName;
 
     @Column(name = "no_of_guests", nullable = false)
     private Integer noOfGuests;
@@ -43,6 +43,14 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State stateId;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private Hotels hotelId;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location locationId;
 
     @OneToMany(mappedBy = "propertyId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

@@ -1,5 +1,6 @@
 package com.hsm.controller;
 
+import com.hsm.entity.Property;
 import com.hsm.payload.PropertyDto;
 import com.hsm.service.PropertiesService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class PropertiesController {
 
     @PostMapping("/add-properties")
     public ResponseEntity<?> addProperties(@RequestBody PropertyDto propertyDto) {
-        if (propertiesService.verifyLocation(propertyDto)) {
+        if (propertiesService.verifyLocations(propertyDto)) {
             return new ResponseEntity<>(propertiesService.addProperties(propertyDto), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Given Location not matched with Country, State or City", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,5 +55,12 @@ public class PropertiesController {
             return new ResponseEntity<>("File Deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+    }
+
+    // ----------------------- Search ----------------------- //
+
+    @PostMapping("/search-hotels")
+    public ResponseEntity<List<Property>> searchHotels(@RequestParam String name) {
+        return new ResponseEntity<>(propertiesService.searchHotelByName(name), HttpStatus.OK);
     }
 }

@@ -16,6 +16,8 @@ public class PropertyDto {
 
     private String cityName;
 
+    private String locationName;
+
     private Integer noOfGuests;
 
     private Integer noOfBedrooms;
