@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/review")
 public class ReviewController {
@@ -23,5 +25,10 @@ public class ReviewController {
                                               @RequestParam Long propertyId,
                                               @AuthenticationPrincipal AppUser appUser) {
         return new ResponseEntity<>(reviewService.addNewReviews(review,propertyId,appUser), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-reviews")
+    public ResponseEntity<List<Review>> getAllReviews(@AuthenticationPrincipal AppUser appUserId) {
+        return new ResponseEntity<>(reviewService.getAllReviews(appUserId), HttpStatus.OK);
     }
 }

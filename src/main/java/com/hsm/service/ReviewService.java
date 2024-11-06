@@ -7,6 +7,9 @@ import com.hsm.repository.PropertyRepository;
 import com.hsm.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ReviewService {
 
@@ -25,5 +28,9 @@ public class ReviewService {
         review.setPropertyId(property);
         review.setAppUserId(appUser);
         return reviewRepository.save(review);
+    }
+
+    public List<Review> getAllReviews(AppUser appUserId) {
+        return reviewRepository.findByAppUserId(appUserId);
     }
 }
