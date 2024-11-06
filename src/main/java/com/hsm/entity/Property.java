@@ -1,8 +1,11 @@
 package com.hsm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,4 +43,8 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State stateId;
+
+    @OneToMany(mappedBy = "propertyId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Review> reviews;
 }
