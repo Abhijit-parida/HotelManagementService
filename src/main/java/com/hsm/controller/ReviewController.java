@@ -20,8 +20,8 @@ public class ReviewController {
 
     @PostMapping("/add-review")
     public ResponseEntity<Review> addReviews(@RequestBody Review review,
-                                              @RequestParam Long propertiesId,
+                                              @RequestParam Long propertyId,
                                               @AuthenticationPrincipal AppUser appUser) {
-        return new ResponseEntity<>(reviewService.addNewReviews(review,propertiesId,appUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(reviewService.addNewReviews(review,propertyId,appUser), HttpStatus.CREATED);
     }
 }

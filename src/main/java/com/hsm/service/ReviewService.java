@@ -20,8 +20,8 @@ public class ReviewService {
     }
 
 
-    public Review addNewReviews(Review review, Long propertiesId, AppUser appUser) {
-        Property property = propertyRepository.findById(propertiesId).get();
+    public Review addNewReviews(Review review, Long propertyId, AppUser appUser) {
+        Property property = propertyRepository.findById(propertyId).get();
         review.setPropertyId(property);
         review.setAppUserId(appUser);
         return reviewRepository.save(review);
