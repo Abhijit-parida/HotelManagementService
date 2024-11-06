@@ -1,8 +1,11 @@
 package com.hsm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,5 +31,9 @@ public class AppUser {
 
     @Column(name = "role", nullable = false, length = 20)
     private String role;
+
+    @OneToMany(mappedBy = "appUserId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Review> reviews;
 
 }
