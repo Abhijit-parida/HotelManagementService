@@ -21,7 +21,4 @@ public class State {
 
     @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Property> properties;
-
-    @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Location> locations;
 }
