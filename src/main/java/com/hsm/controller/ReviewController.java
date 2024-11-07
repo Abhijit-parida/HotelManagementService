@@ -20,15 +20,25 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    // ----------------------- Create ----------------------- //
+
     @PostMapping("/add-review")
-    public ResponseEntity<Review> addReviews(@RequestBody Review review,
+    public ResponseEntity<?> addReviews(@RequestBody Review review,
                                               @RequestParam Long propertyId,
-                                              @AuthenticationPrincipal AppUser appUser) {
-        return new ResponseEntity<>(reviewService.addNewReviews(review,propertyId,appUser), HttpStatus.CREATED);
+                                              @AuthenticationPrincipal AppUser appUserId) {
+        if (reviewService.verifyUniqueReview(propertyId, appUserId)) {
+            return new ResponseEntity<>("Review already exists for this property and user", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(reviewService.addNewReviews(review,propertyId,appUserId), HttpStatus.CREATED);
     }
+
+    // ------------------------ Read ------------------------ //
 
     @GetMapping("/get-reviews")
     public ResponseEntity<List<Review>> getAllReviews(@AuthenticationPrincipal AppUser appUserId) {
         return new ResponseEntity<>(reviewService.getAllReviews(appUserId), HttpStatus.OK);
     }
+
+    // ----------------------- Update ----------------------- //
+    // ----------------------- Delete ----------------------- //
 }
