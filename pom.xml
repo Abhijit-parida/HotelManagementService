@@ -93,6 +93,12 @@
 		<version>1.12.310</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.amazonaws</groupId>-->
+<!--			<artifactId>aws-java-sdk-s3</artifactId>-->
+<!--			<version>1.12.335</version> &lt;!&ndash; Use a recent version &ndash;&gt;-->
+<!--		</dependency>-->
+
 
 	</dependencies>
 

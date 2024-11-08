@@ -9,8 +9,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping("/api/v1/files")
 public class AWSController {
 
     private final AWSService awsService;
@@ -19,7 +21,7 @@ public class AWSController {
         this.awsService = awsService;
     }
 
-    // -------------------- ImageUpload --------------------- //
+    // -------------------- FileUpload --------------------- //
 
     @PostMapping(path = "/upload/file/{bucketName}",
                     consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -27,7 +29,40 @@ public class AWSController {
     public ResponseEntity<?> uploadFile(@RequestParam MultipartFile file,
                                         @PathVariable String bucketName,
                                         @AuthenticationPrincipal AppUser user) {
-        String s = awsService.uploadFile(file, bucketName);
-        return new ResponseEntity<>(s, HttpStatus.OK);
+        return new ResponseEntity<>(awsService.uploadFile(file, bucketName), HttpStatus.OK);
+    }
+
+    // ------------------- GetFileLists -------------------- //
+
+    @GetMapping("/list/{bucketName}")
+    public ResponseEntity<List<String>> listFiles(@PathVariable String bucketName) {
+        return new ResponseEntity<>(awsService.listFiles(bucketName), HttpStatus.OK);
+    }
+
+    // -------------------- FileDelete --------------------- //
+
+    @DeleteMapping("/delete/{bucketName}")
+    public ResponseEntity<String> deleteFile(@RequestParam(value = "url") String fileUrl,
+                                             @PathVariable String bucketName) {
+        try {
+            awsService.deleteFile(bucketName, fileUrl);
+            return new ResponseEntity<>("File marker as delete Successfully", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deletePermanently/{bucketName}")
+    public ResponseEntity<String> deleteFilePermanently(
+            @PathVariable String bucketName,
+            @RequestParam(value = "fileKey") String fileKey) {
+        try {
+            awsService.deleteFilePermanently(bucketName, fileKey);
+            return new ResponseEntity<>("File and all versions deleted permanently", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
